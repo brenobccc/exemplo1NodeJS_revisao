@@ -9,29 +9,59 @@ const port = 3000;
 //Implementação de regra de negócio
 const server = http.createServer((req, res) => {
 
-    //Criar usuario
-    //receber informações do usuario
-    const params = queryString.parse(url.parse(req.url, true).search);
+    let resposta;
+    const urlParse = url.parse(req.url, true);
+    const params = queryString.parse(urlParse.search);
     console.log(params);
-    //Salvar informacoes
+    //Criar usuario
+    if (urlParse.pathname == '/criar-usuario') {
 
-    //argumento do writeFile: nome_do_arquivo/caminho, conteúdo que ficará dentro do arquivo, função de callback
-    //função de callback, o que é: ele irá(in this case) gravar o arquivo com o conteúdo passado, logo 
-    //após irá retornar algo ao fim da execução deste função, ou seja: se tiver funcionado perfeitamente,
-    //irá retornar o resultado esperado, caso não tiver funcionado como esperado, irá retornar um erro.
-    fs.writeFile('users/' + params.id + '.txt', JSON.stringify(params), function (err) {
-        if (err) throw err;
-        console.log('Saved');
-    });
 
-    //Atualizar usuario
+        // ||||| Salvar informacoes e atualizar usuário |||||
+
+        //argumento do writeFile: nome_do_arquivo/caminho, conteúdo que ficará dentro do arquivo, função de callback
+        //função de callback, o que é: ele irá(in this case) gravar o arquivo com o conteúdo passado, logo 
+        //após irá retornar algo ao fim da execução deste função, ou seja: se tiver funcionado perfeitamente,
+        fs.writeFile('users/' + params.id + '.txt', JSON.stringify(params), function (err) {
+            if (err) throw err;
+            console.log('Saved');
+            resposta = "Usuário criado com Sucesso!!"
+
+
+            res.statusCode = 200;//Códig
+            res.setHeader('Content-Type', 'text/plain');
+            res.end(resposta);
+        });
+
+
+
+
+    } else if (urlParse.pathname == '/selecionar-usuario') {//Selecionar usuari
+        fs.readFile("users/" + params.id + ".txt", function (err, data) {
+            resposta = data;
+
+
+            res.statusCode = 200;//Códig
+            res.setHeader('Content-Type', 'text/plain');
+            res.end(resposta);
+        })
+
+    }
+    //receber informações do usuario
+
+
+
+
+
+
     //Pesquisar(get)
+
+
+
+
     //Remover usuario
 
 
-    res.statusCode = 200;//Códig
-    res.setHeader('Content-Type', 'text/plain');
-    res.end("Hello world!!");
 });
 
 // Onde o código começa a executar
