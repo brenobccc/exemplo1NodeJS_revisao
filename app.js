@@ -46,6 +46,30 @@ const server = http.createServer((req, res) => {
             res.end(resposta);
         })
 
+    }else if (urlParse.pathname == '/deletar-usuario') {//Selecionar usuari
+        fs.rm("users/" + params.id + ".txt", function (err, data) {
+            resposta = data;
+
+
+            res.statusCode = 200;//Códig
+            res.setHeader('Content-Type', 'text/plain');
+            res.end(`O id ${params.id} foi deletado com sucesso!`);
+        })
+
+
+        // ("users/" + params.id + ".txt", function (err, data) {
+        //     resposta = data;
+
+
+        //     res.statusCode = 200;//Códig
+        //     res.setHeader('Content-Type', 'text/plain');
+        //     res.end(resposta);
+        // })
+
+    }else {
+        res.statusCode = 200;//Códig
+        res.setHeader('Content-Type', 'text/plain');
+        res.end("rota indefinida");
     }
     //receber informações do usuario
 
